@@ -6,9 +6,6 @@ export type CommentDocument = HydratedDocument<Comment>;
 @Schema()
 export class Comment {
   @Prop()
-  name: string;
-
-  @Prop()
   postId: string;
 
   @Prop()
