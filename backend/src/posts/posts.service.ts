@@ -4,6 +4,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post } from './scheme/posts.scheme';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class PostsService {
@@ -22,15 +23,21 @@ export class PostsService {
     return this.postModel.findById(id).exec();
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    const updatedPost = this.postModel.findByIdAndUpdate(id, updatePostDto, {
-      new: true,
-    });
+  update(id: string, updatePostDto: UpdatePostDto) {
+    const updatedPost = this.postModel.findByIdAndUpdate(
+      new ObjectId(id),
+      updatePostDto,
+      {
+        new: true,
+      },
+    );
     return updatedPost;
   }
 
-  remove(id: number) {
-    const removedPost = this.postModel.findByIdAndDelete(id);
+  remove(id: string): Promise<{ deletedCount?: number }> {
+    const removedPost = this.postModel.deleteOne({
+      _id: new ObjectId(id),
+    });
     return removedPost;
   }
 }

@@ -6,20 +6,12 @@ import { User } from './scheme/user.scheme';
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
-
   findOne(username: string): Promise<User> {
     return this.userModel.findOne({ username }).exec();
+  }
+
+  create(user: User): Promise<User> {
+    const createdUser = new this.userModel(user);
+    return createdUser.save();
   }
 }
