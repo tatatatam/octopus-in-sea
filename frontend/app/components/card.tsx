@@ -14,8 +14,10 @@ export const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <div className="bg-white shadow-md rounded-md p-4 w-full mb-1">
-      <h1 className="text-xl font-bold">{title}</h1>
-      <p className="text-gray-500">{detail}</p>
+      <a href={`/blog/dashboard/${id}`}>
+        <h1 className="text-xl font-bold">{title}</h1>
+        <p className="text-gray-500">{detail}</p>
+      </a>
       {onRemove && (
         <button className="underline mr-1" onClick={() => onRemove(id)}>
           remove

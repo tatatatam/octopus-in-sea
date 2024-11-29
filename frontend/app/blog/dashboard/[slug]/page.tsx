@@ -1,7 +1,10 @@
 "use client";
 import { Button } from "@/app/components/button";
 import { TextArea } from "@/app/components/text";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
 type PostProps = {
   id: string;
   title: string;
@@ -14,29 +17,18 @@ type PostProps = {
 };
 export default function PostSlug() {
   const [post, setPost] = useState<PostProps>();
+  const params = useParams();
   useEffect(() => {
-    const mockPost = {
-      id: "2",
-      title: "Post 2",
-      detail:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
-      comments: [
-        {
-          id: "1",
-          comment: "Comment 1",
-          authorName: "Author 2",
+    const { slug } = params;
+    axios
+      .get(`http://localhost:3000/posts/${slug}`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
         },
-        {
-          id: "2",
-          comment: "Comment 2",
-          authorName: "Author 1",
-        },
-      ],
-    };
-    setPost(mockPost);
-    // axios.get("https://localhost:3000/posts").then((response) => {
-    //   setPosts(response.data);
-    // });
+      })
+      .then((response) => {
+        setPost(response.data);
+      });
   }, []);
 
   return (
