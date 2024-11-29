@@ -46,13 +46,6 @@ export class PostsService {
     return updatedPost;
   }
 
-  remove(id: string): Promise<{ deletedCount?: number }> {
-    const removedPost = this.postModel.deleteOne({
-      _id: new ObjectId(id),
-    });
-    return removedPost;
-  }
-
   async indPostBySlug(id: string) {
     const postModel = await this.postModel.findById(id).exec();
     const comments = await this.commentService.findByPostId(id);
